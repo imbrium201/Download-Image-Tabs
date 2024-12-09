@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            min-width: 200px;
+            padding: 10px;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+        }
+        .link {
+            font-size: 12px;
+            margin-top: 10px;
+            display: block;
+            text-align: center;
+        }
+        .link a {
+            text-decoration: none;
+            color: #0077ff;
+        }
+    </style>
+</head>
+<body>
+    <h2>Download Image Tabs</h2>
+    <p>Enter a prefix for the downloaded files:</p>
+    <input type="text" id="prefixInput" placeholder="e.g. myPrefix" />
+    <button id="downloadBtn">Download Images</button>
+    <div class="link">
+        <a href="#" id="optionsLink">Options</a>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
