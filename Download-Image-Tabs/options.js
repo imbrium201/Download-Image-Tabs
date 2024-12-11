@@ -1,22 +1,40 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Load currently saved settings
-    chrome.storage.sync.get(['subfolder', 'maxSizeMB', 'autoClose'], (result) => {
-        document.getElementById('subfolderInput').value = result.subfolder || '';
-        document.getElementById('maxSizeInput').value = (result.maxSizeMB !== undefined) ? result.maxSizeMB : '';
-        document.getElementById('autoCloseCheckbox').checked = !!result.autoClose;
-    });
+document.addEventListener('DOMContentLoaded', async () => {
+    const prefixInput = document.getElementById('prefixInput');
+    const subfolderInput = document.getElementById('subfolderInput');
+    const maxSizeMBInput = document.getElementById('maxSizeMBInput');
+    const autoCloseCheckbox = document.getElementById('autoCloseCheckbox');
+    const statusMessage = document.getElementById('statusMessage');
+    const saveBtn = document.getElementById('saveOptionsBtn');
 
-    document.getElementById('saveOptions').addEventListener('click', () => {
-        const subfolder = document.getElementById('subfolderInput').value.trim();
-        const maxSizeMB = parseFloat(document.getElementById('maxSizeInput').value.trim());
-        const autoClose = document.getElementById('autoCloseCheckbox').checked;
+    // Load settings from storage
+    const { prefix, subfolder, maxSizeMB, autoClose } = await chrome.storage.sync.get(['prefix', 'subfolder', 'maxSizeMB', 'autoClose']);
 
-        chrome.storage.sync.set({
-            subfolder: subfolder,
-            maxSizeMB: isNaN(maxSizeMB) ? null : maxSizeMB,
-            autoClose: autoClose
-        }, () => {
-            alert('Options saved.');
+    // Populate fields
+    if (typeof prefix === 'string') prefixInput.value = prefix;
+    if (typeof subfolder === 'string') subfolderInput.value = subfolder;
+    if (typeof maxSizeMB === 'number') maxSizeMBInput.value = maxSizeMB;
+    autoCloseCheckbox.checked = !!autoClose;
+
+    saveBtn.addEventListener('click', async () => {
+        const newPrefix = prefixInput.value.trim();
+        const newSubfolder = subfolderInput.value.trim();
+        const newMaxSizeMB = parseFloat(maxSizeMBInput.value);
+        const newAutoClose = autoCloseCheckbox.checked;
+
+        // Validate maxSizeMB (must be a non-negative number or blank)
+        let maxSize = isNaN(newMaxSizeMB) ? null : newMaxSizeMB;
+        if (maxSize !== null && maxSize < 0) maxSize = null;
+
+        await chrome.storage.sync.set({
+            prefix: newPrefix,
+            subfolder: newSubfolder,
+            maxSizeMB: maxSize,
+            autoClose: newAutoClose
         });
+
+        statusMessage.textContent = 'Options saved successfully!';
+        setTimeout(() => {
+            statusMessage.textContent = '';
+        }, 2000);
     });
 });
