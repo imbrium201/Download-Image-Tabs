@@ -1,5 +1,7 @@
 <b>Download Image Tabs</b> is a simple, user-friendly Chrome extension that lets you instantly download images from all currently open tabs that contain only images. Configure a prefix for filenames, specify a subfolder inside your Downloads folder, and set optional preferences like maximum file size limits and auto-closing tabs after downloads.
 
+<h3>Chrome web store:</h3> https://chromewebstore.google.com/detail/download-image-tabs/pabdefgabgodnahianoijldpaghempgp
+
 <h4>Key Features:</h4>
 
 <li><b>Prefix Filenames:</b> Add a custom prefix to all downloaded images.</li>
